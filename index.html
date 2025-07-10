@@ -32,3 +32,92 @@
   <p>ROE: 18%</p>
   <p>Debt/Equity: 0.3</p>
 </div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Investment Screener</title>
+    <style>
+      body {
+        font-family: Arial;
+        background-color: #f0f2f5;
+        padding: 20px;
+      }
+      h2 {
+        color: #333;
+      }
+      input, button {
+        padding: 8px;
+        margin-top: 5px;
+        width: 250px;
+      }
+      button {
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Investment Screener Dashboard</h2>
+
+    <label>Company Ticker (e.g., INFY, RELIANCE.NS):</label><br />
+    <input type="text" id="company" /><br /><br />
+
+    <button onclick="fetchCompanyData()">Check Investment</button>
+
+    <div id="result">🔍 Waiting for input...</div>
+
+    <script>
+      async function fetchCompanyData() {
+        const company = document.getElementById("company").value.trim().toUpperCase();
+        const apiKey = "DU0q1fCz63HBGdx7J6zcBQVuFAa2oKtr";
+
+        if (!company) {
+          document.getElementById("result").innerText = "⚠️ Enter a company ticker symbol.";
+          return;
+        }
+
+        const url = `https://financialmodelingprep.com/api/v3/profile/${company}?apikey=${apiKey}`;
+
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+
+          if (!data || data.length === 0) {
+            document.getElementById("result").innerText = `❌ No data found for "${company}".`;
+            return;
+          }
+
+          const roe = parseFloat(data[0].returnOnEquity);
+          const de = parseFloat(data[0].debtToEquity);
+
+          let score = 0;
+          if (roe >= 15) score += 50;
+          else if (roe >= 10) score += 30;
+
+          if (de <= 0.5) score += 50;
+          else if (de <= 1) score += 20;
+
+          const status = score >= 80 ? "✅ Safe Investment"
+                       : score >= 50 ? "⚠️ Moderate Risk"
+                       : "❌ High Risk — Reconsider";
+
+          document.getElementById("result").innerHTML = `
+            <p><strong>${data[0].companyName}</strong> (${company})</p>
+            <p>ROE: ${roe}% | D/E Ratio: ${de}</p>
+            <p>Score: ${score} → ${status}</p>
+          `;
+        } catch (err) {
+          console.error(err);
+          document.getElementById("result").innerText = "❌ Error fetching data.";
+        }
+      }
+    </script>
+  </body>
+</html>
