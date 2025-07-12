@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🚀 The Investment Cockpit</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+    header { text-align: center; margin-bottom: 20px; }
+    .controls { text-align: center; margin-bottom: 20px; }
+    .card { background: #fff; padding: 15px; margin: 10px auto; border-radius: 10px; width: 90%; max-width: 600px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    footer { text-align: center; margin-top: 20px; color: #555; }
+    select, button { padding: 8px 12px; border-radius: 5px; border: 1px solid #ccc; margin: 0 5px; }
+    button { background: #007bff; color: #fff; border: none; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📊 The Investment Cockpit</h1>
+</header>
+
+<section class="controls">
+  <label for="companySelect">📌 Select Company:</label>
+  <select id="companySelect"></select>
+  <button onclick="scanCompany()">🔍 Scan</button>
+</section>
+
+<section id="dashboard">
+  <div id="fundamentalsCard" class="card">
+    <h2>📋 Fundamentals</h2>
+    <div id="fundamentals"></div>
+  </div>
+
+  <div id="sentimentCard" class="card">
+    <h2>📰 Sentiment</h2>
+    <div id="sentiment"></div>
+  </div>
+
+  <div id="riskCard" class="card">
+    <h2>⚠️ Risk Alerts</h2>
+    <div id="risk"></div>
+  </div>
+
+  <div id="verdictCard" class="card">
+    <h2>🎯 Final Verdict</h2>
+    <div id="verdict"></div>
+  </div>
+</section>
+
+<footer>
+  <p>Made by Kamal 💻 Powered by Live Data & Smart Logic</p>
+</footer>
+
+<script>
+  const companies = ["Tata Steel", "Infosys", "Reliance", "HDFC Bank"];
+
+  window.onload = () => {
+    let select = document.getElementById("companySelect");
+    companies.forEach(cmp => {
+      let opt = document.createElement("option");
+      opt.value = cmp;
+      opt.innerHTML = cmp;
+      select.appendChild(opt);
+    });
+  };
+
+  function scanCompany() {
+    let cmp = document.getElementById("companySelect").value;
+    if (!cmp) {
+      alert("Please select a company first.");
+      return;
+    }
+
+    // Dummy data — replace later with API calls
+    document.getElementById("fundamentals").innerHTML = `
+      <p>ROE: 24%</p>
+      <p>Promoter Holding: 65%</p>
+      <p>Debt/Equity: 0.3</p>
+      <p>Market Cap: ₹52,000 Cr</p>
+    `;
+
+    document.getElementById("sentiment").innerHTML = `
+      <p>Sentiment: Positive</p>
+      <p>News: "Stock hits new high today."</p>
+    `;
+
+    document.getElementById("risk").innerHTML = `
+      <p>RSI: 68</p>
+      <p>Volume Spike: Yes</p>
+    `;
+
+    document.getElementById("verdict").innerHTML = `
+      <p>Status: 🚀 Strong Buy</p>
+      <p>Score: 89 / 100</p>
+    `;
+  }
+</script>
+
+</body>
+</html>
