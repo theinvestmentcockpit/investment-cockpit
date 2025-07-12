@@ -1,0 +1,76 @@
+// Sample dummy companies
+const companies = ["Tata Steel", "Infosys", "HDFC Bank", "Asian Paints"];
+
+// Page load pe populate karenge
+window.onload = () => {
+  const select = document.getElementById("companySelect");
+  companies.forEach(cmp => {
+    const option = document.createElement("option");
+    option.value = cmp;
+    option.textContent = cmp;
+    select.appendChild(option);
+  });
+};
+
+// Dummy company data (replace later with API JSON)
+const companyData = {
+  "Tata Steel": {
+    roe: 22,
+    promoter: 55,
+    debtEquity: 0.3,
+    marketCap: 90000,
+    sentiment: 0.6,
+    headline: "Strong quarterly numbers announced.",
+    volumeSpike: "No",
+    priceDrop: "No",
+    verdict: "✅ BUY",
+    score: 85
+  },
+  // Add more companies
+};
+
+function scanCompany() {
+  const company = document.getElementById("companySelect").value;
+  if (!company) {
+    alert("Please select a company.");
+    return;
+  }
+  
+  const data = companyData[company];
+  if (!data) {
+    alert("Data not available for selected company.");
+    return;
+  }
+
+  // Populate cards
+  document.querySelector("#fundamentalsCard").innerHTML = `
+    <h2>📋 Fundamentals</h2>
+    <p>ROE: ${data.roe}%</p>
+    <p>Promoter Holding: ${data.promoter}%</p>
+    <p>Debt/Equity: ${data.debtEquity}</p>
+    <p>Market Cap: ₹${data.marketCap} Cr</p>
+  `;
+
+  document.querySelector("#sentimentCard").innerHTML = `
+    <h2>📰 Sentiment</h2>
+    <p>Latest Sentiment Score: ${data.sentiment}</p>
+    <p id="headlinePreview">${data.headline}</p>
+  `;
+
+  document.querySelector("#riskCard").innerHTML = `
+    <h2>🚦 Risk Alerts</h2>
+    <p>Volume Spike: ${data.volumeSpike}</p>
+    <p>Price Drop: ${data.priceDrop}</p>
+  `;
+
+  document.querySelector("#verdictCard").innerHTML = `
+    <h2>🎯 Final Verdict</h2>
+    <p>Status: ${data.verdict}</p>
+    <p>Score: ${data.score} / 100</p>
+    <button onclick="addToWatchlist()">📌 Add to Watchlist</button>
+  `;
+}
+
+function addToWatchlist() {
+  alert("📌 Added to Watchlist ✅");
+}
